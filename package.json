@@ -12,7 +12,9 @@
     "supabase:start": "supabase start",
     "supabase:stop": "supabase stop",
     "test:db": "supabase test db --local --network-id gf-supabase-loopback",
-    "test:integration": "node --env-file=.env.local --test tests/integration/*.test.ts"
+    "test:integration": "node --env-file=.env.local --test tests/integration/*.test.ts",
+    "test:spike:backend": "node --env-file=.env.local --test tests/spike/mig-r3-3-backend.test.ts",
+    "test:spike:data-api": "node --env-file=.env.local --test tests/spike/mig-r3-3-data-api.test.ts"
   },
   "dependencies": {
     "next": "16.3.6",
@@ -20,12 +22,16 @@
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.117.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
+    "pg": "8.23.0",
     "supabase": "2.118.0",
     "tailwindcss": "^4",
     "typescript": "^5"
