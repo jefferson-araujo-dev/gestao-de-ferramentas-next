@@ -5,7 +5,12 @@
 project_id = "gestao-de-ferramentas-next"
 
 [api]
-enabled = true
+enabled = false
+# MIG-R3.3-S: Data API (PostgREST + GraphQL) desligada — o Next.js será o único acesso aos dados.
+# Também remove o /rest-admin/v1/* (schema_cache, ready, metrics), que o Kong local encaminha para
+# a porta administrativa do PostgREST SEM autenticação e com CORS `*`. Os 12 testes de
+# tests/integration que afirmam comportamento do PostgREST exigem `true` (ver
+# docs/mig-r3-3-seguranca-local.md). Regressão: npm run test:security.
 # Port to use for the API URL.
 # Fora do intervalo padrão 54320-54329: esse bloco está na faixa de exclusão dinâmica de portas
 # do Windows nesta máquina (netsh interface ipv4 show excludedportrange protocol=tcp),
@@ -103,7 +108,11 @@ enabled = true
 # max_header_length = 4096
 
 [studio]
-enabled = true
+enabled = false
+# MIG-R3.3-S: desligado por segurança. Na CLI 2.118.0 esta chave controla o Studio E o pg-meta.
+# Ligada, expõe SQL como `postgres` (BYPASSRLS, CREATEROLE) sem autenticação em /pg/query e /mcp
+# (Kong, CORS `*`, explorável por página de outra origem local) e na porta 40203. Testes SQL usam
+# psql/pgTAP. A variável SUPABASE_STUDIO_ENABLED sobrepõe este valor: não definir.
 # Port to use for Supabase Studio.
 port = 40203
 # External URL of the API server that frontend connects to.
@@ -397,7 +406,10 @@ deno_version = 2
 # secret_key = "env(SECRET_VALUE)"
 
 [analytics]
-enabled = true
+enabled = false
+# MIG-R3.3-S: desligado por segurança. Controla Logflare e Vector. Ligado, o Logflare local
+# (single tenant, banco como supabase_admin) emite sessão do painel sem credencial
+# (/auth/login/single_tenant) e publica a porta 40207; o Vector só existe para ele.
 port = 40207
 # Configure one of the supported backends: `postgres`, `bigquery`.
 backend = "postgres"

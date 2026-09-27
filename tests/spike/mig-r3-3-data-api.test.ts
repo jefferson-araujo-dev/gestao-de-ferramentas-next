@@ -119,15 +119,16 @@ test('API-2 Auth segue respondendo pelo mesmo gateway', async () => {
   assert.equal(r.status, 200);
 });
 
-// Caracterização (não é defesa): o pg-meta local executa SQL como postgres SEM chave e com CORS
-// aberto. É ferramenta administrativa do stack local, independente da Data API. Se isto mudar,
-// o teste falha e obriga a revisar o registro em docs/mig-r3-3-planejamento.md.
-test('API-3 caracterização: /pg/query do pg-meta local executa SQL sem chave, com ou sem Data API', async () => {
+// MIG-R3.3-P caracterizou aqui que o pg-meta local executava SQL como postgres SEM chave e com
+// CORS aberto. MIG-R3.3-S fechou isso com [studio] enabled = false (a CLI não sobe pg-meta sem o
+// Studio); a regressão completa está em tests/security/mig-r3-3-local-admin.test.ts. Este caso
+// agora falha se o /pg/query voltar a executar, com ou sem Data API.
+test('API-3 /pg/query do pg-meta local não executa SQL sem chave (MIG-R3.3-S)', async () => {
   const r = await fetch(`${API}/pg/query`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: 'select current_user as u' }),
   });
-  assert.equal(r.status, 200);
-  assert.deepEqual(await r.json(), [{ u: 'postgres' }]);
+  assert.ok(r.status < 200 || r.status >= 300, `/pg/query → ${r.status}`);
+  assert.equal((await r.text()).includes('postgres'), false);
 });

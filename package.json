@@ -9,12 +9,13 @@
     "start": "next start",
     "lint": "eslint",
     "test:unit": "node --test tests/unit/*.test.ts",
-    "supabase:start": "supabase start",
+    "supabase:start": "supabase start --network-id gf-supabase-loopback",
     "supabase:stop": "supabase stop",
     "test:db": "supabase test db --local --network-id gf-supabase-loopback",
     "test:integration": "node --env-file=.env.local --test tests/integration/*.test.ts",
     "test:spike:backend": "node --env-file=.env.local --test tests/spike/mig-r3-3-backend.test.ts",
-    "test:spike:data-api": "node --env-file=.env.local --test tests/spike/mig-r3-3-data-api.test.ts"
+    "test:spike:data-api": "node --env-file=.env.local --test tests/spike/mig-r3-3-data-api.test.ts",
+    "test:security": "node --env-file=.env.local --test tests/security/*.test.ts"
   },
   "dependencies": {
     "next": "16.3.6",
