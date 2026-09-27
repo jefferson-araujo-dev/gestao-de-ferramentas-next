@@ -14,9 +14,11 @@ enabled = true
 port = 40201
 # Schemas to expose in your API. Tables, views and stored procedures in this schema will get API
 # endpoints. `public` and `graphql_public` schemas are included by default.
-schemas = ["public", "graphql_public"]
+schemas = ["api", "graphql_public"]
 # Extra schemas to add to the search_path of every request.
-extra_search_path = ["public", "extensions"]
+# `public` saiu daqui no MIG-R3.2: não há objeto da aplicação nele e os papéis da Data API não têm
+# USAGE, então mantê-lo no search_path só mascararia erro de referência não qualificada.
+extra_search_path = ["extensions"]
 # The maximum number of rows returns from a view, table, or stored procedure. Limits payload size
 # for accidental or malicious requests.
 max_rows = 1000
@@ -24,7 +26,13 @@ max_rows = 1000
 # `postgres` are reachable through the Data API roles (`anon`, `authenticated`, `service_role`)
 # without explicit GRANTs, matching the cloud default. Set to `false` to require explicit GRANTs
 # instead. Left unset, a fresh project falls back to `true`.
-# auto_expose_new_tables = true
+#
+# MIG-R3.2: `false` adotado. A CLI 2.118.0 reconhece a chave e avisa que ela é depreciada e será
+# removida em 2026-10-30, quando `false` passa a ser o comportamento padrão — o aviso recomenda
+# exatamente este valor. Alcance oficial: apenas objetos criados por `postgres`. NÃO cobre os
+# objetos criados por `supabase_admin`, cuja ACL padrão não é revogável por postgres; a barreira
+# desse caso é a retirada de USAGE em public feita pela migração do MIG-R3.2.
+auto_expose_new_tables = false
 
 [api.tls]
 # Enable HTTPS endpoints locally using a self-signed certificate.
