@@ -1,4 +1,5 @@
 # contracts
 
-Tipos e schemas compartilhados entre camadas (DTOs, validação de entrada/saída). Vazio nesta
-fundação; populado quando o esquema PostgreSQL for definido (MIG-R3).
+Contratos de entrada/saída compartilhados entre camadas. `operational.ts` (MIG-R3.1) define as
+allowlists das respostas operacionais sanitizadas (`project`, `assertShape`). Nenhuma API de
+negócio os usa ainda; a consulta nominal terá contrato próprio no Gate da API de backend.

@@ -19,10 +19,10 @@ src/
   app/             # App Router do Next.js (rotas, layouts)
   components/      # Componentes de UI reutilizáveis (vazio nesta fundação)
   config/          # Configuração de ambiente e o guard de isolamento
-  contracts/       # Tipos/schemas compartilhados entre camadas (vazio; depende do esquema MIG-R3)
+  contracts/       # Tipos/schemas compartilhados entre camadas (allowlists operacionais desde MIG-R3.1; ver docs/mig-r3-modelo.md)
   domain/          # Entidades e regras de domínio (vazio; próximos Gates)
   application/     # Casos de uso que orquestram o domínio (vazio; próximos Gates)
-  authz/           # Autorização e políticas de acesso (vazio; RLS de negócio é MIG-R3+)
+  authz/           # Autorização no servidor (sem código ainda; a autorização em vigor está no banco, ver docs/mig-r3-modelo.md)
   infrastructure/  # Integrações externas (Supabase local nesta fase)
   lib/             # Utilitários puros, incluindo isolation-guard.ts
 tests/
