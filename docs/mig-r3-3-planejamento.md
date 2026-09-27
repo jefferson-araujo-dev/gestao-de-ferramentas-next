@@ -1,5 +1,9 @@
 # MIG-R3.3-P — Planejamento: backend exclusivo Next.js
 
+> **Atualização MIG-R3.3-S:** o `config.toml` agora tem `[api]`, `[studio]` e `[analytics]` com
+> `enabled = false`, e o `/pg/query` (risco 1) e o `/rest-admin` (risco 2) estão fechados. O teste
+> API-3 foi invertido. Ver [mig-r3-3-seguranca-local.md](mig-r3-3-seguranca-local.md).
+
 Estudo com prova local. **Nada foi implementado como arquitetura definitiva**, nada foi publicado e
 nenhum ambiente hospedado foi acessado. A desativação da Data API foi temporária e revertida; o
 `supabase/config.toml` do repositório continua com `[api] enabled = true`.
