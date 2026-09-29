@@ -1,26 +1,150 @@
 @import "tailwindcss";
 
+/* ---- Tokens de cor — LIGHT (padrão) ----
+   Convertidos de scratchpad/ux-0-prototypes/tokens.css (Gate UX-0-V.1 aprovado). */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f8fb;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --surface-muted: #eef0f5;
+  --border: #dde1e8;
+  --border-control: #6b7280;
+
+  --text-primary: #12131a;
+  --text-secondary: #454a58;
+  --text-muted: #5c6270;
+  --text-inverse: #ffffff;
+
+  --accent: #4338ca;
+  --accent-hover: #3730a3;
+  --accent-active: #312e81;
+  --on-accent: #ffffff;
+  --accent-text: #4338ca;
+  --accent-subtle: #eef2ff;
+
+  --success: #15803d;
+  --success-subtle: #ecfdf3;
+  --warning: #b45309;
+  --warning-subtle: #fffbeb;
+  --danger: #b91c1c;
+  --danger-subtle: #fef2f2;
+  --info: #0369a1;
+  --info-subtle: #f0f9ff;
+
+  --focus-ring: #4338ca;
+
+  --shadow-token-sm: 0 1px 2px rgba(15, 15, 20, 0.06), 0 1px 1px rgba(15, 15, 20, 0.04);
+  --shadow-token-md: 0 4px 10px rgba(15, 15, 20, 0.08), 0 2px 4px rgba(15, 15, 20, 0.05);
+  --shadow-token-lg: 0 12px 24px rgba(15, 15, 20, 0.12), 0 4px 8px rgba(15, 15, 20, 0.06);
 }
 
+/* ---- Tokens de cor — DARK ---- */
+:root[data-theme="dark"] {
+  --background: #0a0b10;
+  --surface: #14161f;
+  --surface-elevated: #1b1e2a;
+  --surface-muted: #20232f;
+  --border: #2d3140;
+  --border-control: #8b90a0;
+
+  --text-primary: #f3f4f8;
+  --text-secondary: #c7cad6;
+  --text-muted: #9ba0b0;
+  --text-inverse: #12131a;
+
+  --accent: #818cf8;
+  --accent-hover: #a5b4fc;
+  --accent-active: #c7d2fe;
+  --on-accent: #12131a;
+  --accent-text: #a5b4fc;
+  --accent-subtle: #262a44;
+
+  --success: #4ade80;
+  --success-subtle: #10281a;
+  --warning: #fbbf24;
+  --warning-subtle: #2b2210;
+  --danger: #f87171;
+  --danger-subtle: #2c1414;
+  --info: #38bdf8;
+  --info-subtle: #0f2733;
+
+  --focus-ring: #a5b4fc;
+
+  --shadow-token-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-token-md: 0 4px 10px rgba(0, 0, 0, 0.55);
+  --shadow-token-lg: 0 12px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* ---- Ponte para tokens Tailwind v4 (gera utilitários bg-*, text-*, border-*, shadow-*) ----
+   "inline" porque o valor real muda em runtime (atributo [data-theme]), não em build-time. */
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-border-control: var(--border-control);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-inverse: var(--text-inverse);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-active: var(--accent-active);
+  --color-on-accent: var(--on-accent);
+  --color-accent-text: var(--accent-text);
+  --color-accent-subtle: var(--accent-subtle);
+
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-danger: var(--danger);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+
+  --color-focus-ring: var(--focus-ring);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --shadow-sm: var(--shadow-token-sm);
+  --shadow-md: var(--shadow-token-md);
+  --shadow-lg: var(--shadow-token-lg);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Raio — valores próprios do design aprovado (não os defaults do Tailwind). Estáticos
+   (não dependem do tema), por isso ficam fora do bloco "inline". */
+@theme {
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+/* Foco visível — outline, não box-shadow, para continuar visível em alto contraste.
+   Regra global (não por utilitário) para garantir que nenhum elemento interativo,
+   presente ou futuro, fique sem indicação de foco por teclado. */
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Movimento reduzido — respeita a preferência do usuário em qualquer animação/transição. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
