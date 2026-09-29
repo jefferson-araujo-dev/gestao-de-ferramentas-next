@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local dev/qa artifacts (playwright-cli screenshots, snapshots, console logs)
+.playwright-cli/
+.dev-server.log
