@@ -12,7 +12,9 @@ export function StatCards({ stats }: { stats: StatCard[] }) {
             key={stat.id}
             className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4 shadow-sm"
           >
-            <span className="text-xs font-medium text-text-muted">{stat.label}</span>
+            {/* min-h-8 = 2 linhas (16px): alinha os numerais entre cartões da mesma linha quando
+                um rótulo quebra em 390px. A partir de md o rótulo cabe em 1 linha. */}
+            <span className="min-h-8 text-xs font-medium text-text-muted md:min-h-0">{stat.label}</span>
             <span
               className={`text-[28px] leading-none font-bold tabular-nums ${stat.valueClassName ?? "text-text-primary"}`}
             >
