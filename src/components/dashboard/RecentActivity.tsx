@@ -20,7 +20,7 @@ export function RecentActivity({ items }: { items: ActivityEntry[] }) {
         {items.map((item, index) => (
           <li
             key={item.id}
-            className={`flex items-center justify-between gap-3 ${
+            className={`flex flex-col items-start gap-2 md:flex-row md:items-center md:justify-between md:gap-3 ${
               index < items.length - 1 ? "border-b border-border pb-3" : ""
             }`}
           >
@@ -30,10 +30,10 @@ export function RecentActivity({ items }: { items: ActivityEntry[] }) {
         ))}
       </ul>
 
-      <p className="mt-3 text-xs text-text-muted">
-        Nomes de ferramentas fictícios. Nenhum nome de colaborador é exibido no Painel, para
-        nenhum perfil — <strong className="text-text-primary">PENDENTE_DE_CONFIRMACAO</strong>.
-      </p>
+      {/* Pendência de governança (não exibir na UI): visibilidade de nomes de colaborador no
+          Painel por perfil ainda não decidida. Enquanto isso o Painel não mostra nomes de
+          pessoas. Registrada também em src/components/README.md ("Desvios deliberados"). */}
+      <p className="mt-3 text-xs text-text-muted">Dados fictícios de demonstração.</p>
     </section>
   );
 }

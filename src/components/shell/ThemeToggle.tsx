@@ -1,47 +1,35 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { ACTION_PREFIX, TARGET_LABEL, nextTheme, saveTheme, type Theme } from "./theme";
 
-type Theme = "light" | "dark";
-
-const listeners = new Set<() => void>();
-
-function subscribe(onStoreChange: () => void) {
-  listeners.add(onStoreChange);
-  return () => listeners.delete(onStoreChange);
-}
-
-function getSnapshot(): Theme {
+function currentTheme(): Theme {
   return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
 }
 
-// No servidor não há <html data-theme>, então a única leitura estável é "light" — o
-// script inline em layout.tsx já aplica o tema real ao <html> antes da hidratação, e o
-// useSyncExternalStore corrige o snapshot do cliente sem precisar de useEffect+setState.
-function getServerSnapshot(): Theme {
-  return "light";
+function toggleTheme() {
+  const next = nextTheme(currentTheme());
+  document.documentElement.setAttribute("data-theme", next);
+  let storage: Storage | null = null;
+  try {
+    storage = window.localStorage; // o próprio acesso pode lançar com storage bloqueado
+  } catch {}
+  saveTheme(storage, next);
 }
 
+// Os dois rótulos de destino existem no DOM; o CSS (globals.css, .theme-toggle-*) mostra só o
+// do tema atual conforme <html data-theme>. Assim o texto e o nome acessível já estão certos
+// no HTML do servidor, antes da hidratação. O nome acessível vem do conteúdo: "Ativar " (sr-only)
+// + texto visível do rótulo ativo (o oculto, display:none, não entra no nome).
 export function ThemeToggle() {
-  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-
-  function toggleTheme() {
-    const next: Theme = getSnapshot() === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-    listeners.forEach((notify) => notify());
-  }
-
-  const isDark = theme === "dark";
-
   return (
     <button
       type="button"
       onClick={toggleTheme}
-      aria-pressed={isDark}
-      className="inline-flex h-11 items-center gap-2 rounded-full border border-border-control bg-surface px-3 text-[13px] text-text-secondary hover:bg-surface-muted"
+      className="inline-flex h-11 min-w-11 items-center rounded-full border border-border-control bg-surface px-3 text-[13px] text-text-secondary hover:bg-surface-muted"
     >
-      <span>{isDark ? "Modo escuro" : "Modo claro"}</span>
+      <span className="sr-only">{ACTION_PREFIX}</span>
+      <span className="theme-toggle-to-dark inline-block first-letter:uppercase">{TARGET_LABEL.dark}</span>
+      <span className="theme-toggle-to-light inline-block first-letter:uppercase">{TARGET_LABEL.light}</span>
     </button>
   );
 }

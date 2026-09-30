@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -21,13 +21,15 @@ export const metadata: Metadata = {
 // o "flash" de tema errado. Roda como script inline bloqueante — sem rede, sem framework.
 const THEME_INIT_SCRIPT = `
 (function () {
-  try {
-    var stored = localStorage.getItem('theme');
-    var theme = stored === 'light' || stored === 'dark'
-      ? stored
-      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme);
-  } catch (e) {}
+  var stored = null;
+  var theme = null;
+  try { stored = localStorage.getItem('theme'); } catch (e) {}
+  if (stored === 'light' || stored === 'dark') {
+    theme = stored;
+  } else {
+    try { theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; } catch (e) {}
+  }
+  if (theme) document.documentElement.setAttribute('data-theme', theme);
 })();
 `;
 
@@ -35,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

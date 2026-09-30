@@ -108,7 +108,7 @@
 
   --color-focus-ring: var(--focus-ring);
 
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-geist-mono);
 
   --shadow-sm: var(--shadow-token-sm);
@@ -135,7 +135,18 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
+}
+
+/* Alternador de tema: mostra só o rótulo do tema de destino, conforme <html data-theme>.
+   Sem atributo (ex.: matchMedia indisponível) vale o padrão claro. Não depende de JS/hidratação. */
+.theme-toggle-to-light {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle-to-dark {
+  display: none;
+}
+:root[data-theme="dark"] .theme-toggle-to-light {
+  display: inline-block;
 }
 
 /* Movimento reduzido — respeita a preferência do usuário em qualquer animação/transição. */
